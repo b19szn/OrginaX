@@ -1,0 +1,77 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum ArtifactType {
+  TEXT
+  PDF
+  CODE
+  IMAGE
+}
+
+enum JobStatus {
+  PENDING
+  PREPROCESSING
+  EXTRACTING
+  COMPARING
+  COMPLETE
+  FAILED
+}
+
+model User {
+  id           String        @id @default(cuid())
+  name         String
+  email        String        @unique
+  passwordHash String
+  role         String        @default("STUDENT") // STUDENT | TEACHER | ADMIN
+  submissions  Submission[]
+  createdAt    DateTime      @default(now())
+}
+
+model Submission {
+  id          String         @id @default(cuid())
+  userId      String
+  user        User           @relation(fields: [userId], references: [id])
+  title       String
+  artifacts   Artifact[]
+  jobs        ComparisonJob[]
+  createdAt   DateTime       @default(now())
+}
+
+model Artifact {
+  id              String         @id @default(cuid())
+  submissionId    String
+  submission      Submission     @relation(fields: [submissionId], references: [id])
+  type            ArtifactType
+  originalFileUrl String
+  normalizedText  String?        @db.Text   // extracted/cleaned text (for TEXT/PDF/CODE)
+  language        String?                   // for CODE, e.g. "python", "cpp"
+  embedding       Json?                     // stored vector (array of floats) from AI API
+  embeddingModel  String?                   // e.g. "all-MiniLM-L6-v2"
+  createdAt       DateTime       @default(now())
+
+  comparisonsAsA  ComparisonJob[] @relation("ArtifactA")
+  comparisonsAsB  ComparisonJob[] @relation("ArtifactB")
+}
+
+model ComparisonJob {
+  id              String       @id @default(cuid())
+  submissionId    String
+  submission      Submission   @relation(fields: [submissionId], references: [id])
+  artifactAId     String
+  artifactA       Artifact     @relation("ArtifactA", fields: [artifactAId], references: [id])
+  artifactBId     String
+  artifactB       Artifact     @relation("ArtifactB", fields: [artifactBId], references: [id])
+  status          JobStatus    @default(PENDING)
+  similarityScore Float?       // 0-100 normalized confidence score
+  rawCosine       Float?
+  reportJson      Json?        // structured report: overlap regions, diff spans, etc.
+  errorMessage    String?
+  createdAt       DateTime     @default(now())
+  completedAt     DateTime?
+}
