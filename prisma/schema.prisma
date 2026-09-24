@@ -7,14 +7,21 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// -------------------------------------------------------------
+// Core Application Models (Preserved for full backward compatibility)
+// -------------------------------------------------------------
+
 model User {
-  id           String        @id @default(cuid())
-  name         String
-  email        String        @unique
-  passwordHash String        @default("")
-  role         String        @default("STUDENT") // STUDENT | TEACHER | ADMIN
-  submissions  Submission[]
-  createdAt    DateTime      @default(now())
+  id            String        @id @default(cuid())
+  name          String
+  email         String        @unique
+  passwordHash  String        @default("")
+  role          String        @default("STUDENT") // STUDENT | TEACHER | ADMIN
+  adminRole     String?       // SuperAdmin | BillingAdmin | SupportAdmin (for backoffice operator panel)
+  tierCode      String        @default("FREE")    // FREE | PRO | ENTERPRISE | ACADEMIC
+  accountStatus String        @default("ACTIVE")  // ACTIVE | FROZEN | SUSPENDED
+  submissions   Submission[]
+  createdAt     DateTime      @default(now())
 }
 
 model Submission {
@@ -58,4 +65,115 @@ model ComparisonJob {
   errorMessage    String?
   createdAt       DateTime        @default(now())
   completedAt     DateTime?
+}
+
+// -------------------------------------------------------------
+// Enterprise Backoffice Super-Admin Models (Zero-Knowledge Privacy)
+// -------------------------------------------------------------
+
+model AdminSetting {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       String
+  description String?
+  updatedBy   String?
+  updatedAt   DateTime @updatedAt
+}
+
+model AIProviderConfig {
+  id             String   @id @default(cuid())
+  provider       String   // OPENAI | ANTHROPIC | GEMINI | GROK | DEEPSEEK | HUGGINGFACE | LOCAL | QDRANT | MILVUS
+  name           String
+  apiKeyMasked   String?  // e.g. "sk-proj-••••••••4a8b" (never return unmasked to UI)
+  endpointUrl    String?
+  isEnabled      Boolean  @default(false)
+  isFallback     Boolean  @default(false)
+  modelId        String   // e.g. "gpt-4o", "claude-3-5-sonnet-20241022", "gemini-1.5-pro", "all-MiniLM-L6-v2"
+  maxTokens      Int      @default(4096)
+  temperature    Float    @default(0.1)
+  timeoutMs      Int      @default(15000)
+  lastLatencyMs  Int?
+  status         String   @default("DISCONNECTED") // HEALTHY | DEGRADED | DISCONNECTED | TESTING
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model MultimodalScoringFormula {
+  id                   String   @id @default(cuid())
+  textWeight           Float    @default(0.40)
+  codeWeight           Float    @default(0.35)
+  diagramWeight        Float    @default(0.25)
+  similarityThreshold  Float    @default(75.0)
+  strictMode           Boolean  @default(true)
+  updatedBy            String?
+  updatedAt            DateTime @updatedAt
+}
+
+model CmsNode {
+  id          String   @id @default(cuid())
+  key         String   @unique // hero_banner | pricing_tiers | faq_blocks | privacy_policy | terms_of_service | academic_integrity
+  title       String
+  contentJson String   // JSON serialized payload or rich text
+  isPublished Boolean  @default(true)
+  version     Int      @default(1)
+  updatedBy   String?
+  updatedAt   DateTime @updatedAt
+}
+
+model PaymentGatewayConfig {
+  id                  String   @id @default(cuid())
+  gateway             String   // STRIPE | LEMON_SQUEEZY | SSLCOMMERZ | MANUAL
+  name                String
+  publicKey           String?
+  secretKeyMasked     String?  // e.g. "sk_live_••••••••331f"
+  webhookSecretMasked String?
+  isLiveMode          Boolean  @default(false)
+  isEnabled           Boolean  @default(false)
+  updatedAt           DateTime @updatedAt
+}
+
+model SubscriptionTier {
+  id                      String   @id @default(cuid())
+  code                    String   @unique // FREE | PRO | ENTERPRISE | ACADEMIC
+  name                    String
+  priceMonthlyCents       Int      @default(0)
+  monthlyScanAllowance    Int      @default(50)
+  rateLimitPerMinute      Int      @default(10)
+  overagePricePerScanCents Int     @default(0)
+  featuresJson            String   @default("[]")
+  isActive                Boolean  @default(true)
+  updatedAt               DateTime @updatedAt
+}
+
+model TransactionLedger {
+  id              String   @id @default(cuid())
+  invoiceId       String   @unique
+  userId          String
+  userEmailMasked String?  // Zero-Knowledge: masked e.g. "u***@domain.com"
+  gateway         String   // STRIPE | LEMON_SQUEEZY | SSLCOMMERZ
+  amountCents     Int
+  currency        String   @default("USD")
+  status          String   // SUCCEEDED | PENDING | REFUNDED | FAILED
+  createdAt       DateTime @default(now())
+}
+
+model AdminAuditLog {
+  id         String   @id @default(cuid())
+  actorEmail String
+  actorRole  String   // SuperAdmin | BillingAdmin | SupportAdmin
+  action     String   // KEY_ROTATED | MODEL_TOGGLED | THRESHOLD_CALIBRATED | CMS_PUBLISHED | TIER_UPDATED
+  target     String
+  details    String?
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+}
+
+model TelemetryEvent {
+  id         String   @id @default(cuid())
+  taskUuid   String   @unique // Hashed UUID only - Zero-Knowledge: NO document contents or raw text
+  modality   String   // TEXT | CODE | DIAGRAM | MULTIMODAL
+  durationMs Int
+  tokenUsage Int?
+  statusCode Int      @default(200)
+  createdAt  DateTime @default(now())
 }

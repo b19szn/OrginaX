@@ -26,6 +26,13 @@
   - Local cosine similarity and TF-IDF/AST vectorizers run out-of-the-box with **zero external API keys required**.
   - Pluggable AI Gateway ready for HuggingFace embeddings (`all-MiniLM-L6-v2`) and OpenAI models via environment configuration.
 
+- **🛡️ Enterprise Administration Console (Zero-Knowledge Privacy)**
+  - **Zero-Knowledge Isolation:** Mathematical data privacy ensures administrators cannot view student document text, raw bodies, or uploaded filenames. All scans are monitored exclusively via salted SHA-256 `task_uuid`s.
+  - **Dynamic Multimodal Calibrator:** Real-time slider controls to fine-tune system-wide weights across Text ($W_{\text{text}}$), Code AST ($W_{\text{code}}$), and Diagram ($W_{\text{diag}}$) heuristics.
+  - **Model & Key Vault:** Masked credentials and live roundtrip ping testing for OpenAI, Anthropic Claude, Google Gemini, DeepSeek, Grok, HuggingFace, Qdrant, and Milvus.
+  - **Full Dual-Theme Engine:** Seamless Light Mode (atmospheric pastel frosted glass) and Dark Mode (deep night nebula canvas) with persistent preference memory.
+  - **Monetization & Headless CMS:** Multi-merchant billing (Stripe, Lemon Squeezy, SSLCommerz), subscription tier quota management, and broadcast announcement banners.
+
 ---
 
 ## 🏗️ System Architecture

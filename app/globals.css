@@ -31,6 +31,18 @@ body {
   background-attachment: fixed;
 }
 
+/* Dark Mode Atmospheric Minimalist Canvas */
+.multimodal-canvas-dark {
+  background-color: #090d16;
+  background-image: 
+    radial-gradient(ellipse at 12% 15%, rgba(30, 58, 138, 0.40) 0%, rgba(15, 23, 42, 0.35) 45%, transparent 70%),
+    radial-gradient(ellipse at 88% 18%, rgba(88, 28, 135, 0.35) 0%, rgba(15, 23, 42, 0.30) 45%, transparent 70%),
+    radial-gradient(ellipse at 80% 82%, rgba(6, 78, 59, 0.30) 0%, rgba(15, 23, 42, 0.25) 45%, transparent 70%),
+    radial-gradient(ellipse at 18% 78%, rgba(120, 53, 15, 0.25) 0%, rgba(15, 23, 42, 0.20) 45%, transparent 70%),
+    radial-gradient(circle at 50% 50%, rgba(30, 41, 59, 0.40) 0%, transparent 60%);
+  background-attachment: fixed;
+}
+
 /* Frosted Glass White Card Surfaces Allowing Atmospheric Glow to Shine Through */
 .multimodal-card {
   background-color: rgba(255, 255, 255, 0.88);
