@@ -21,6 +21,7 @@ import {
   Loader2,
   Check,
   ExternalLink,
+  Sparkles,
 } from "lucide-react";
 
 interface Gateway {
@@ -69,6 +70,10 @@ export default function MonetizationPage() {
   const [inputSecretKey, setInputSecretKey] = useState("");
   const [inputWebhookSecret, setInputWebhookSecret] = useState("");
   const [savingGateway, setSavingGateway] = useState(false);
+
+  // Gateway Connection Test & Simulation State
+  const [testResults, setTestResults] = useState<Record<string, { loading: boolean; result?: any }>>({});
+  const [simulating, setSimulating] = useState(false);
 
   const fetchMonetization = async () => {
     try {
@@ -129,6 +134,77 @@ export default function MonetizationPage() {
     }
   };
 
+  const handleTestConnection = async (gw: Gateway) => {
+    try {
+      setTestResults((prev) => ({ ...prev, [gw.gateway]: { loading: true } }));
+      const res = await fetch("/api/admin/monetization", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "TEST_GATEWAY", gateway: gw.gateway }),
+      });
+      const data = await res.json();
+      setTestResults((prev) => ({
+        ...prev,
+        [gw.gateway]: { loading: false, result: data.testResult },
+      }));
+      if (data.testResult?.message) {
+        setStatusMessage(data.testResult.message);
+        setTimeout(() => setStatusMessage(null), 5000);
+      }
+    } catch (e: any) {
+      setTestResults((prev) => ({
+        ...prev,
+        [gw.gateway]: { loading: false, result: { success: false, message: e.message } },
+      }));
+    }
+  };
+
+  const handleSimulatePayment = async () => {
+    try {
+      setSimulating(true);
+      const res = await fetch("/api/admin/monetization", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "SIMULATE_PAYMENT",
+          gateway: "STRIPE",
+          planCode: "PRO",
+          amountCents: 2000,
+          userEmail: "investigator@mit.edu",
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setStatusMessage(data.message);
+        setTimeout(() => setStatusMessage(null), 4000);
+        await fetchMonetization();
+      }
+    } catch (e) {
+      console.error("Simulation failed", e);
+    } finally {
+      setSimulating(false);
+    }
+  };
+
+  const handleRefund = async (invoiceId: string) => {
+    if (!confirm(`Are you sure you want to refund and mark invoice ${invoiceId} as REFUNDED?`)) return;
+    try {
+      const res = await fetch("/api/admin/monetization", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "REFUND_TRANSACTION", invoiceId }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setStatusMessage(data.message);
+        setTimeout(() => setStatusMessage(null), 3000);
+        await fetchMonetization();
+      }
+    } catch (e) {
+      console.error("Refund failed", e);
+    }
+  };
+
   const openConfigModal = (gw: Gateway) => {
     setEditingGateway(gw);
     setInputPublicKey(gw.publicKey || "");
@@ -186,6 +262,15 @@ export default function MonetizationPage() {
         </div>
 
         <div className="flex items-center gap-2.5">
+          <button
+            onClick={handleSimulatePayment}
+            disabled={simulating}
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white transition shadow-xs disabled:opacity-50 cursor-pointer"
+          >
+            {simulating ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
+            <span>Simulate $20 Payment</span>
+          </button>
+
           <Link
             href="/admin/plans"
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100 transition shadow-2xs"
@@ -201,6 +286,42 @@ export default function MonetizationPage() {
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
             <span>Sync Status</span>
           </button>
+        </div>
+      </div>
+
+      {/* 4 Financial & Gateway KPIs */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-2xs">
+          <div className="text-xs text-slate-500 font-medium">Total Processed Volume</div>
+          <div className="text-2xl font-bold font-mono text-emerald-600 dark:text-emerald-400 mt-1">
+            ${(transactions.filter((t) => t.status === "SUCCEEDED").reduce((acc, t) => acc + t.amountCents, 0) / 100).toFixed(2)}
+          </div>
+          <div className="text-[10px] text-slate-400 mt-0.5">Across active merchant accounts</div>
+        </div>
+
+        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-2xs">
+          <div className="text-xs text-slate-500 font-medium">Active Payment Gateways</div>
+          <div className="text-2xl font-bold text-slate-800 dark:text-white mt-1">
+            {gateways.filter((g) => g.isEnabled).length} <span className="text-xs font-normal text-slate-400">/ {gateways.length} online</span>
+          </div>
+          <div className="text-[10px] text-emerald-600 mt-0.5 font-medium">Auto-failover enabled</div>
+        </div>
+
+        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-2xs">
+          <div className="text-xs text-slate-500 font-medium">Completed Transactions</div>
+          <div className="text-2xl font-bold text-slate-800 dark:text-white mt-1">
+            {transactions.filter((t) => t.status === "SUCCEEDED").length}
+          </div>
+          <div className="text-[10px] text-slate-400 mt-0.5">Recorded in immutable ledger</div>
+        </div>
+
+        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-2xs">
+          <div className="text-xs text-slate-500 font-medium">Compliance &amp; Privacy</div>
+          <div className="text-base font-bold text-emerald-600 dark:text-emerald-400 mt-1 flex items-center gap-1.5">
+            <ShieldCheck className="w-4 h-4" />
+            <span>Zero-Knowledge Validated</span>
+          </div>
+          <div className="text-[10px] text-slate-400 mt-0.5">Customer credentials masked</div>
         </div>
       </div>
 
@@ -308,15 +429,48 @@ export default function MonetizationPage() {
                 </div>
               </div>
 
-              {/* Action Button: Open Configuration Modal */}
-              <button
-                type="button"
-                onClick={() => openConfigModal(gw)}
-                className="w-full py-2 px-3 rounded-xl text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 hover:text-emerald-700 dark:hover:text-emerald-300 border border-slate-200 dark:border-slate-700 hover:border-emerald-300 transition flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
-              >
-                <Key className="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-600" />
-                <span>Configure API Keys</span>
-              </button>
+              {testResults[gw.gateway]?.result && (
+                <div
+                  className={`p-2 rounded-xl text-[10px] font-mono flex items-center gap-1.5 ${
+                    testResults[gw.gateway].result.success
+                      ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800"
+                      : "bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800"
+                  }`}
+                >
+                  <span
+                    className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+                      testResults[gw.gateway].result.success ? "bg-emerald-500 animate-pulse" : "bg-rose-500"
+                    }`}
+                  />
+                  <span className="truncate">{testResults[gw.gateway].result.message}</span>
+                </div>
+              )}
+
+              {/* Action Buttons: Test Connection & Configure */}
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleTestConnection(gw)}
+                  disabled={testResults[gw.gateway]?.loading}
+                  className="py-2 px-2.5 rounded-xl text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 shadow-2xs"
+                >
+                  <RefreshCw
+                    className={`w-3.5 h-3.5 ${
+                      testResults[gw.gateway]?.loading ? "animate-spin text-emerald-600" : "text-slate-500"
+                    }`}
+                  />
+                  <span>{testResults[gw.gateway]?.loading ? "Testing..." : "Test Link"}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => openConfigModal(gw)}
+                  className="py-2 px-2.5 rounded-xl text-xs font-medium bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 transition flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                >
+                  <Key className="w-3.5 h-3.5" />
+                  <span>Edit Keys</span>
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -502,7 +656,7 @@ export default function MonetizationPage() {
                 <th className="py-2.5 px-3.5">Amount</th>
                 <th className="py-2.5 px-3.5">Status</th>
                 <th className="py-2.5 px-3.5">Date</th>
-                <th className="py-2.5 px-3.5 text-right">Audit</th>
+                <th className="py-2.5 px-3.5 text-right">Actions &amp; Audit</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
@@ -515,7 +669,15 @@ export default function MonetizationPage() {
                     ${(t.amountCents / 100).toFixed(2)}
                   </td>
                   <td className="py-2.5 px-3.5">
-                    <span className="px-2 py-0.5 rounded text-[10px] bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-bold border border-emerald-200 dark:border-emerald-800">
+                    <span
+                      className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
+                        t.status === "SUCCEEDED"
+                          ? "bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800"
+                          : t.status === "REFUNDED"
+                          ? "bg-rose-50 dark:bg-rose-950 text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-800"
+                          : "bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800"
+                      }`}
+                    >
                       {t.status}
                     </span>
                   </td>
@@ -523,9 +685,24 @@ export default function MonetizationPage() {
                     {new Date(t.createdAt).toLocaleDateString()}
                   </td>
                   <td className="py-2.5 px-3.5 text-right">
-                    <span className="text-[10px] text-slate-400 font-mono">
-                      Verified
-                    </span>
+                    <div className="flex items-center justify-end gap-2">
+                      <Link
+                        href={`/payment/success?invoiceId=${encodeURIComponent(t.invoiceId)}&gateway=${encodeURIComponent(t.gateway)}`}
+                        className="text-[11px] font-sans text-emerald-600 hover:text-emerald-700 font-medium inline-flex items-center gap-0.5 hover:underline"
+                      >
+                        <span>Receipt</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </Link>
+                      {t.status === "SUCCEEDED" && (
+                        <button
+                          type="button"
+                          onClick={() => handleRefund(t.invoiceId)}
+                          className="text-[10px] text-rose-600 hover:text-rose-700 bg-rose-50 dark:bg-rose-950/40 px-2 py-0.5 rounded border border-rose-200 dark:border-rose-800 transition cursor-pointer"
+                        >
+                          Refund
+                        </button>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}

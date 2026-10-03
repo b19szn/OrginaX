@@ -1,12 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { ShieldCheck, LogIn, LogOut, UserCheck, Sparkles, UserPlus } from "lucide-react";
+import { ShieldCheck, LogIn, LogOut, UserCheck, Sparkles, UserPlus, CreditCard } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import AuthModal from "./AuthModal";
+import BillingModal from "./BillingModal";
 
 export default function Navbar() {
   const { user, logout, openAuthModal, isLoading } = useAuth();
+  const [isBillingModalOpen, setIsBillingModalOpen] = useState(false);
 
   const getRoleLabel = (role?: string) => {
     switch (role) {
@@ -100,7 +103,18 @@ export default function Navbar() {
             {!isLoading && (
               <>
                 {user ? (
-                  <div className="flex items-center space-x-3">
+                  <div className="flex items-center space-x-2.5">
+                    {/* Billing Tier Trigger Button */}
+                    <button
+                      type="button"
+                      onClick={() => setIsBillingModalOpen(true)}
+                      title="Manage Billing & Subscription Quota"
+                      className="flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-emerald-50/80 hover:bg-emerald-100/90 border border-emerald-200 text-xs text-emerald-800 font-semibold transition cursor-pointer shadow-2xs"
+                    >
+                      <CreditCard className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>{user.tierCode || "FREE"}</span>
+                    </button>
+
                     {/* User Identity Chip */}
                     <div className="flex items-center space-x-2 px-3 py-1.5 rounded-full bg-slate-100/80 border border-slate-200/80 text-xs text-slate-700">
                       <div className="w-5 h-5 rounded-full bg-slate-800 text-white font-medium flex items-center justify-center text-[10px]">
@@ -156,8 +170,17 @@ export default function Navbar() {
         </div>
       </header>
 
+      {/* User Billing & Subscription Quota Modal */}
+      {isBillingModalOpen && (
+        <BillingModal
+          isOpen={isBillingModalOpen}
+          onClose={() => setIsBillingModalOpen(false)}
+        />
+      )}
+
       {/* Global Auth Modal */}
       <AuthModal />
     </>
   );
 }
+

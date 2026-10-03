@@ -17,6 +17,8 @@ import {
   CreditCard,
 } from "lucide-react";
 
+import CheckoutModal from "./CheckoutModal";
+
 interface Plan {
   id: string;
   code: string;
@@ -123,6 +125,8 @@ export default function PricingSection() {
   const [enterpriseEmail, setEnterpriseEmail] = useState("contact@originax.online");
   const [modalOpen, setModalOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [checkoutPlan, setCheckoutPlan] = useState<Plan | null>(null);
+  const [checkoutModalOpen, setCheckoutModalOpen] = useState(false);
 
   useEffect(() => {
     fetch("/api/pricing")
@@ -236,23 +240,34 @@ export default function PricingSection() {
                 {plan.code === "ENTERPRISE" ? (
                   <button
                     onClick={() => setModalOpen(true)}
-                    className="w-full py-3 px-4 rounded-xl font-medium text-xs sm:text-sm text-white bg-slate-900 hover:bg-slate-800 transition-all flex items-center justify-center space-x-2 shadow-xs group"
+                    className="w-full py-3 px-4 rounded-xl font-medium text-xs sm:text-sm text-white bg-slate-900 hover:bg-slate-800 transition-all flex items-center justify-center space-x-2 shadow-xs group cursor-pointer"
                   >
                     <Mail className="w-4 h-4 text-slate-300 group-hover:scale-105 transition-transform" />
                     <span>{plan.ctaText || "Contact for Custom Plan"}</span>
                   </button>
-                ) : (
+                ) : plan.price === "$0" || plan.code === "FREE" ? (
                   <Link
                     href={plan.ctaHref || "/dashboard"}
-                    className={`w-full py-3 px-4 rounded-xl font-medium text-xs sm:text-sm transition-all flex items-center justify-center space-x-2 shadow-xs ${
-                      plan.highlight
-                        ? "bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-600/20"
-                        : "bg-slate-100 hover:bg-slate-200 text-slate-800"
-                    }`}
+                    className="w-full py-3 px-4 rounded-xl font-medium text-xs sm:text-sm transition-all flex items-center justify-center space-x-2 shadow-xs bg-slate-100 hover:bg-slate-200 text-slate-800"
                   >
                     <span>{plan.ctaText}</span>
                     <ArrowRight className="w-4 h-4" />
                   </Link>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setCheckoutPlan(plan);
+                      setCheckoutModalOpen(true);
+                    }}
+                    className={`w-full py-3 px-4 rounded-xl font-medium text-xs sm:text-sm transition-all flex items-center justify-center space-x-2 shadow-xs cursor-pointer ${
+                      plan.highlight
+                        ? "bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-600/20"
+                        : "bg-slate-900 hover:bg-slate-800 text-white"
+                    }`}
+                  >
+                    <span>{plan.ctaText}</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
                 )}
               </div>
             </div>
@@ -379,6 +394,20 @@ export default function PricingSection() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Checkout Modal */}
+      {checkoutModalOpen && checkoutPlan && (
+        <CheckoutModal
+          isOpen={checkoutModalOpen}
+          onClose={() => setCheckoutModalOpen(false)}
+          initialPlan={{
+            code: checkoutPlan.code,
+            name: checkoutPlan.name,
+            price: checkoutPlan.price,
+            period: checkoutPlan.period,
+          }}
+        />
       )}
     </section>
   );
