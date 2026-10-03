@@ -93,20 +93,20 @@ export default function StatCards({ metrics }: StatCardsProps) {
         </div>
       </div>
 
-      {/* 4. LATENCY & THROUGHPUT - Magenta Reference Theme */}
-      <div className="multimodal-card p-6 bg-gradient-to-br from-fuchsia-50/90 via-white/95 to-purple-50/60 border border-fuchsia-200/90 hover:border-fuchsia-400 hover:shadow-md hover:shadow-fuchsia-500/5 transition-all">
+      {/* 4. LATENCY & THROUGHPUT - Sky Blue Theme */}
+      <div className="multimodal-card p-6 bg-gradient-to-br from-sky-50/90 via-white/95 to-blue-50/60 border border-sky-200/90 hover:border-sky-400 hover:shadow-md hover:shadow-sky-500/5 transition-all">
         <div className="flex items-center justify-between">
           <span className="text-xs font-normal uppercase tracking-wider text-slate-500">
             Pipeline Latency
           </span>
-          <div className="w-9 h-9 rounded-xl bg-fuchsia-100/90 border border-fuchsia-300/80 flex items-center justify-center text-fuchsia-700 shadow-2xs">
+          <div className="w-9 h-9 rounded-xl bg-sky-100/90 border border-sky-300/80 flex items-center justify-center text-sky-700 shadow-2xs">
             <Zap className="w-4 h-4" />
           </div>
         </div>
         <div className="mt-4">
           <div className="text-3xl font-normal text-slate-800 tracking-tight flex items-baseline space-x-1.5">
             <span>{metrics.avgLatencyMs}</span>
-            <span className="text-sm font-medium text-fuchsia-700">ms</span>
+            <span className="text-sm font-medium text-sky-700">ms</span>
           </div>
           <p className="text-xs font-normal text-slate-600 mt-1.5">
             End-to-end vector extraction

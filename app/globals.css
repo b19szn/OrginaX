@@ -19,12 +19,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Atmospheric Minimalist Canvas with Rich Reference-Site Pastel Auras (Sky Blue, Seafoam, Lavender, Peach) */
+/* Atmospheric Minimalist Canvas with Reference-Site Pastel Auras (Sky Blue, Emerald, Seafoam, Peach) */
 .multimodal-canvas {
   background-color: #f1f6fc;
   background-image: 
     radial-gradient(ellipse at 12% 15%, rgba(186, 230, 253, 0.75) 0%, rgba(218, 235, 253, 0.45) 45%, transparent 70%),
-    radial-gradient(ellipse at 88% 18%, rgba(221, 214, 254, 0.65) 0%, rgba(237, 233, 254, 0.35) 45%, transparent 70%),
+    radial-gradient(ellipse at 88% 18%, rgba(167, 243, 208, 0.55) 0%, rgba(209, 250, 229, 0.30) 45%, transparent 70%),
     radial-gradient(ellipse at 80% 82%, rgba(204, 251, 241, 0.70) 0%, rgba(223, 243, 241, 0.40) 45%, transparent 70%),
     radial-gradient(ellipse at 18% 78%, rgba(254, 215, 170, 0.55) 0%, rgba(255, 237, 213, 0.30) 45%, transparent 70%),
     radial-gradient(circle at 50% 50%, rgba(224, 242, 254, 0.35) 0%, transparent 60%);
@@ -36,7 +36,7 @@ body {
   background-color: #090d16;
   background-image: 
     radial-gradient(ellipse at 12% 15%, rgba(30, 58, 138, 0.40) 0%, rgba(15, 23, 42, 0.35) 45%, transparent 70%),
-    radial-gradient(ellipse at 88% 18%, rgba(88, 28, 135, 0.35) 0%, rgba(15, 23, 42, 0.30) 45%, transparent 70%),
+    radial-gradient(ellipse at 88% 18%, rgba(30, 64, 175, 0.35) 0%, rgba(15, 23, 42, 0.30) 45%, transparent 70%),
     radial-gradient(ellipse at 80% 82%, rgba(6, 78, 59, 0.30) 0%, rgba(15, 23, 42, 0.25) 45%, transparent 70%),
     radial-gradient(ellipse at 18% 78%, rgba(120, 53, 15, 0.25) 0%, rgba(15, 23, 42, 0.20) 45%, transparent 70%),
     radial-gradient(circle at 50% 50%, rgba(30, 41, 59, 0.40) 0%, transparent 60%);
@@ -108,7 +108,7 @@ body {
   }
 }
 
-/* Animated Energy Pulse along Diagram Vector Lines (Meta-style animation) */
+/* Animated Energy Pulse along Diagram Vector Lines */
 @keyframes laserDash {
   to {
     stroke-dashoffset: -32;

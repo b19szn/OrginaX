@@ -85,8 +85,8 @@ export default function ClassroomMatrixView({ data, onReset }: ClassroomMatrixVi
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-6 rounded-2xl bg-white/80 backdrop-blur-md border border-slate-200/70 shadow-sm">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-100">
-              <Users className="w-3 h-3 text-indigo-500" />
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-teal-50 text-teal-700 border border-teal-100">
+              <Users className="w-3 h-3 text-teal-600" />
               Classroom Cross-Examination Report
             </span>
             <span className="text-xs text-slate-400 font-normal">
@@ -137,10 +137,10 @@ export default function ClassroomMatrixView({ data, onReset }: ClassroomMatrixVi
           <div className="text-xs text-amber-600/80 mt-0.5">Pairs 35% - 69%</div>
         </div>
 
-        <div className="p-4 rounded-xl bg-indigo-50/50 border border-indigo-100 shadow-sm col-span-2 md:col-span-1">
-          <div className="text-xs font-medium text-indigo-500 uppercase tracking-wider">Class Average</div>
-          <div className="text-2xl font-semibold text-indigo-700 mt-1">{data.summary.averageSimilarity}%</div>
-          <div className="text-xs text-indigo-500/80 mt-0.5">Mean similarity score</div>
+        <div className="p-4 rounded-xl bg-teal-50/50 border border-teal-100 shadow-sm col-span-2 md:col-span-1">
+          <div className="text-xs font-medium text-teal-600 uppercase tracking-wider">Class Average</div>
+          <div className="text-2xl font-semibold text-teal-700 mt-1">{data.summary.averageSimilarity}%</div>
+          <div className="text-xs text-teal-600/80 mt-0.5">Mean similarity score</div>
         </div>
       </div>
 
@@ -267,7 +267,7 @@ export default function ClassroomMatrixView({ data, onReset }: ClassroomMatrixVi
                 {data.files[hoveredCell.col]?.name}
               </strong>
             </span>
-            <span className="inline-flex items-center gap-1.5 text-indigo-600 font-medium">
+            <span className="inline-flex items-center gap-1.5 text-teal-700 font-medium">
               Similarity: {hoveredCell.score}% (Click to open full diff)
               <ExternalLink className="w-3 h-3" />
             </span>
@@ -409,7 +409,7 @@ export default function ClassroomMatrixView({ data, onReset }: ClassroomMatrixVi
                           href={`/report/${pair.jobId}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-indigo-600 hover:text-indigo-700 bg-indigo-50/70 hover:bg-indigo-100/70 border border-indigo-100 transition-all shadow-sm"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-teal-700 hover:text-teal-800 bg-teal-50/70 hover:bg-teal-100/70 border border-teal-100 transition-all shadow-sm"
                         >
                           Inspect Diff
                           <ArrowRight className="w-3 h-3" />

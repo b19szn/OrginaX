@@ -36,10 +36,10 @@ export default function SimilarityGauge({
       };
     } else {
       return {
-        colorHex: "#16a34a", // Green (Original / Low Risk)
+        colorHex: "#0284c7", // Sky Blue (Original / Low Risk)
         tierText: "Low Similarity (Original)",
-        tierBadgeClass: "bg-emerald-50 text-emerald-700 border-emerald-200",
-        icon: <CheckCircle className="w-4 h-4 text-emerald-600 mr-1" />,
+        tierBadgeClass: "bg-sky-50 text-sky-700 border-sky-200",
+        icon: <CheckCircle className="w-4 h-4 text-sky-600 mr-1" />,
       };
     }
   }, [score]);

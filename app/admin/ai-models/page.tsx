@@ -236,7 +236,7 @@ export default function AIModelOrchestrationPage() {
           disabled={loading}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-white/90 text-slate-700 border border-slate-200/80 hover:bg-slate-50 transition shadow-2xs"
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin text-indigo-600" : ""}`} />
+          <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin text-emerald-600" : ""}`} />
           <span>Refresh Providers</span>
         </button>
       </div>
@@ -246,7 +246,7 @@ export default function AIModelOrchestrationPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-100 pb-4">
           <div>
             <h2 className="text-sm font-bold text-slate-800 flex items-center gap-2">
-              <Sliders className="w-4 h-4 text-indigo-600" />
+              <Sliders className="w-4 h-4 text-emerald-600" />
               <span>Multimodal Similarity Scoring Calibrator</span>
               <span className={`text-[11px] font-mono px-2 py-0.5 rounded-full font-semibold ${
                 totalWeightPercent === 100
@@ -361,10 +361,10 @@ export default function AIModelOrchestrationPage() {
         </div>
 
         {/* Threshold & Strict Mode Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 rounded-xl bg-indigo-50/50 border border-indigo-200/60 text-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 rounded-xl bg-emerald-50/50 border border-emerald-200/60 text-xs">
           <div className="space-y-1">
             <span className="font-semibold text-slate-800 block">
-              Severe Collusion Alert Threshold: <strong className="font-mono text-indigo-700">{scoringFormula.similarityThreshold}%</strong>
+              Severe Collusion Alert Threshold: <strong className="font-mono text-emerald-700">{scoringFormula.similarityThreshold}%</strong>
             </span>
             <span className="text-[11px] text-slate-500 block">
               Pairwise comparisons exceeding this composite score trigger immediate peer collusion warnings.
@@ -379,7 +379,7 @@ export default function AIModelOrchestrationPage() {
               step="1"
               value={scoringFormula.similarityThreshold}
               onChange={(e) => setScoringFormula({ ...scoringFormula, similarityThreshold: parseFloat(e.target.value) })}
-              className="w-40 accent-indigo-600 cursor-pointer"
+              className="w-40 accent-emerald-600 cursor-pointer"
             />
 
             <label className="flex items-center gap-2 cursor-pointer select-none">
@@ -387,7 +387,7 @@ export default function AIModelOrchestrationPage() {
                 type="checkbox"
                 checked={scoringFormula.strictMode}
                 onChange={(e) => setScoringFormula({ ...scoringFormula, strictMode: e.target.checked })}
-                className="w-4 h-4 rounded text-indigo-600 accent-indigo-600"
+                className="w-4 h-4 rounded text-emerald-600 accent-emerald-600"
               />
               <span className="font-medium text-slate-700 text-xs">Strict Mode (Penalize partial matches)</span>
             </label>
@@ -419,7 +419,7 @@ export default function AIModelOrchestrationPage() {
             </span>
           </h2>
           <p className="text-xs text-slate-500 mt-0.5">
-            Store, rotate, and live-test credentials for OpenAI, Anthropic, Google Gemini, Grok, DeepSeek, HuggingFace, and Vector stores.
+            Manage active multimodal similarity engines: Sentence-BERT (Text), CodeBERT (Code AST), CLIP (Vision), Local Vectorizer (Offline), and OpenAI Gateway.
           </p>
         </div>
 
@@ -427,7 +427,6 @@ export default function AIModelOrchestrationPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {providers.map((p) => {
             const isLocal = p.provider === "LOCAL";
-            const isVectorDB = p.provider === "QDRANT" || p.provider === "MILVUS";
             const isTesting = testingId === p.id;
             const hasTestMsg = testResult && testResult.id === p.id;
 
@@ -444,18 +443,16 @@ export default function AIModelOrchestrationPage() {
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-2.5">
                     <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold shadow-2xs border ${
-                      p.provider === "OPENAI"
-                        ? "bg-emerald-50 text-emerald-700 border-emerald-200"
-                        : p.provider === "ANTHROPIC"
-                        ? "bg-amber-50 text-amber-700 border-amber-200"
-                        : p.provider === "GEMINI"
+                      p.provider === "SENTENCE_BERT"
                         ? "bg-blue-50 text-blue-700 border-blue-200"
-                        : p.provider === "DEEPSEEK"
-                        ? "bg-cyan-50 text-cyan-700 border-cyan-200"
-                        : p.provider === "GROK"
+                        : p.provider === "CODEBERT"
+                        ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                        : p.provider === "CLIP"
+                        ? "bg-amber-50 text-amber-700 border-amber-200"
+                        : p.provider === "LOCAL"
                         ? "bg-purple-50 text-purple-700 border-purple-200"
-                        : isVectorDB
-                        ? "bg-violet-50 text-violet-700 border-violet-200"
+                        : p.provider === "OPENAI"
+                        ? "bg-emerald-50 text-emerald-700 border-emerald-200"
                         : "bg-slate-100 text-slate-700 border-slate-200"
                     }`}>
                       {p.provider.slice(0, 2)}
@@ -481,10 +478,10 @@ export default function AIModelOrchestrationPage() {
                     {/* Status Pill */}
                     <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase font-semibold ${
                       p.status === "HEALTHY"
-                        ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                        ? "bg-sky-50 text-sky-700 border border-sky-200"
                         : "bg-slate-100 text-slate-600 border border-slate-200"
                     }`}>
-                      <span className={`w-1.5 h-1.5 rounded-full ${p.status === "HEALTHY" ? "bg-emerald-500" : "bg-slate-400"}`}></span>
+                      <span className={`w-1.5 h-1.5 rounded-full ${p.status === "HEALTHY" ? "bg-sky-500" : "bg-slate-400"}`}></span>
                       {p.status}
                       {p.lastLatencyMs && ` (${p.lastLatencyMs}ms)`}
                     </span>
@@ -494,7 +491,7 @@ export default function AIModelOrchestrationPage() {
                       onClick={() => handleToggleEnabled(p)}
                       aria-label="Toggle enable"
                       className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden ${
-                        p.isEnabled ? "bg-indigo-600" : "bg-slate-300"
+                        p.isEnabled ? "bg-emerald-600" : "bg-slate-300"
                       }`}
                     >
                       <span
@@ -527,7 +524,7 @@ export default function AIModelOrchestrationPage() {
                         placeholder={p.apiKeyMasked ? "Enter new key to rotate..." : "Enter provider secret key..."}
                         value={inputKeys[p.id] || ""}
                         onChange={(e) => setInputKeys({ ...inputKeys, [p.id]: e.target.value })}
-                        className="flex-1 px-3 py-1.5 text-xs font-mono rounded-xl bg-slate-50 border border-slate-200 text-slate-800 placeholder:text-slate-400 focus:outline-hidden focus:ring-1 focus:ring-indigo-500"
+                        className="flex-1 px-3 py-1.5 text-xs font-mono rounded-xl bg-slate-50 border border-slate-200 text-slate-800 placeholder:text-slate-400 focus:outline-hidden focus:ring-1 focus:ring-emerald-500"
                       />
                       <button
                         onClick={() => handleSaveApiKey(p.id)}
@@ -573,10 +570,10 @@ export default function AIModelOrchestrationPage() {
                 {hasTestMsg && (
                   <div className={`p-2.5 rounded-xl text-xs flex items-center gap-2 ${
                     testResult.success
-                      ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
+                      ? "bg-sky-50 text-sky-800 border border-sky-200"
                       : "bg-red-50 text-red-800 border border-red-200"
                   }`}>
-                    {testResult.success ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> : <XCircle className="w-3.5 h-3.5 text-red-600" />}
+                    {testResult.success ? <CheckCircle2 className="w-3.5 h-3.5 text-sky-600" /> : <XCircle className="w-3.5 h-3.5 text-red-600" />}
                     <span>{testResult.message}</span>
                   </div>
                 )}
@@ -588,14 +585,14 @@ export default function AIModelOrchestrationPage() {
                     disabled={isTesting}
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 transition"
                   >
-                    <Radio className={`w-3 h-3 ${isTesting ? "animate-spin text-indigo-600" : ""}`} />
+                    <Radio className={`w-3 h-3 ${isTesting ? "animate-spin text-emerald-600" : ""}`} />
                     <span>{isTesting ? "Pinging..." : "Test Connection"}</span>
                   </button>
 
                   {!p.isFallback && (
                     <button
                       onClick={() => handleSetFallback(p.id)}
-                      className="text-xs text-indigo-600 hover:text-indigo-800 hover:underline font-medium"
+                      className="text-xs text-emerald-600 hover:text-emerald-800 hover:underline font-medium"
                     >
                       Make Default Fallback
                     </button>

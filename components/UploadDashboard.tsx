@@ -18,23 +18,34 @@ import {
   Users,
   FolderUp,
   Layers,
+  Lock,
 } from "lucide-react";
 import ClassroomMatrixView, { BatchResultData } from "./ClassroomMatrixView";
+import { useAuth } from "@/context/AuthContext";
 
 interface UploadDashboardProps {
   onJobCreated?: (jobId: string) => void;
   loadBatchId?: string | null;
   onBatchLoaded?: () => void;
+  defaultMode?: "pairwise" | "batch";
 }
 
 export default function UploadDashboard({
   onJobCreated,
   loadBatchId,
   onBatchLoaded,
+  defaultMode = "pairwise",
 }: UploadDashboardProps) {
   const router = useRouter();
-  const [comparisonMode, setComparisonMode] = useState<"pairwise" | "batch">("pairwise");
+  const { user, openAuthModal, isLoading: isAuthLoading } = useAuth();
+  const [comparisonMode, setComparisonMode] = useState<"pairwise" | "batch">(defaultMode);
   const [selectedModality, setSelectedModality] = useState<"TEXT" | "CODE" | "IMAGE">("TEXT");
+
+  useEffect(() => {
+    if (defaultMode) {
+      setComparisonMode(defaultMode);
+    }
+  }, [defaultMode]);
 
   // Input states (Pairwise 1-on-1)
   const [title, setTitle] = useState("");
@@ -167,6 +178,10 @@ export default function UploadDashboard({
 
   const handleUploadAndCompare = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) {
+      openAuthModal();
+      return;
+    }
     setIsProcessing(true);
     setProgressStep("Normalizing inputs & uploading artifacts...");
 
@@ -257,6 +272,10 @@ export default function UploadDashboard({
 
   const handleBatchSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
+    if (!user) {
+      openAuthModal();
+      return;
+    }
     if (batchFiles.length < 2) return;
 
     setIsBatchProcessing(true);
@@ -295,6 +314,10 @@ export default function UploadDashboard({
   };
 
   const handleLoadDemoBatch = async () => {
+    if (!user) {
+      openAuthModal();
+      return;
+    }
     setIsBatchProcessing(true);
     setBatchProgressStep("Simulating 4 student submissions & computing cross-matrix...");
     try {
@@ -327,6 +350,34 @@ export default function UploadDashboard({
 
   return (
     <div id="upload-section" className="multimodal-card p-6 sm:p-10 mb-10 bg-white/90 backdrop-blur-md border border-slate-200/90 shadow-md">
+      {/* Institutional Authentication Banner */}
+      {!user && !isAuthLoading && (
+        <div className="mb-6 p-4 rounded-2xl bg-amber-50/80 border border-amber-200/90 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-amber-900 shadow-2xs">
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 rounded-xl bg-amber-100 flex items-center justify-center text-amber-700 shrink-0">
+              <Lock className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-xs font-semibold text-amber-900">
+                Institutional Authentication Required
+              </div>
+              <div className="text-[11px] text-amber-700">
+                You must be signed in with an active investigator or student profile to run similarity checks and AST extractions.
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center space-x-2 shrink-0">
+            <button
+              type="button"
+              onClick={openAuthModal}
+              className="px-3.5 py-1.5 bg-amber-700 hover:bg-amber-800 text-white rounded-xl text-xs font-medium transition-all shadow-xs flex items-center space-x-1.5"
+            >
+              <span>Sign In / Register</span>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Top Level Mode Switcher: Pairwise vs Classroom Batch */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pb-6 mb-6 border-b border-slate-200/80">
         <div className="flex items-center p-1 rounded-2xl bg-slate-100/90 border border-slate-200/80 max-w-lg w-full sm:w-auto shadow-2xs">
@@ -352,9 +403,9 @@ export default function UploadDashboard({
                 : "text-slate-500 hover:text-slate-800"
             }`}
           >
-            <Users className="w-4 h-4 text-indigo-500" />
+            <Users className="w-4 h-4 text-teal-600" />
             <span>Classroom Batch (All-vs-All)</span>
-            <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-indigo-50 text-indigo-700 border border-indigo-100 font-medium">
+            <span className="px-1.5 py-0.5 rounded-full text-[10px] bg-teal-50 text-teal-700 border border-teal-100 font-medium">
               Teacher
             </span>
           </button>
@@ -374,7 +425,7 @@ export default function UploadDashboard({
             <button
               type="button"
               onClick={() => loadPreset("code")}
-              className="text-emerald-700 hover:text-emerald-800 underline underline-offset-2 transition-colors font-medium"
+              className="text-emerald-600 hover:text-emerald-700 underline underline-offset-2 transition-colors font-medium"
             >
               Code Sample
             </button>
@@ -408,9 +459,9 @@ export default function UploadDashboard({
                 type="button"
                 onClick={handleLoadDemoBatch}
                 disabled={isBatchProcessing}
-                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-medium text-indigo-700 bg-indigo-50/80 hover:bg-indigo-100 border border-indigo-200/80 transition-all shadow-sm shrink-0 disabled:opacity-50"
+                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-medium text-teal-700 bg-teal-50/80 hover:bg-teal-100 border border-teal-200/80 transition-all shadow-sm shrink-0 disabled:opacity-50"
               >
-                <Sparkles className="w-3.5 h-3.5 text-indigo-500" />
+                <Sparkles className="w-3.5 h-3.5 text-teal-600" />
                 <span>Load 4-Student Demo Class</span>
               </button>
             </div>
@@ -426,7 +477,7 @@ export default function UploadDashboard({
                   value={batchTitle}
                   onChange={(e) => setBatchTitle(e.target.value)}
                   placeholder="e.g. CS201 - Algorithms Homework 3 (Section B)"
-                  className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-white border border-slate-200/80 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-400 transition-all shadow-2xs"
+                  className="w-full px-3.5 py-2.5 text-xs sm:text-sm bg-white border border-slate-200/80 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:border-teal-400 transition-all shadow-2xs"
                 />
               </div>
 
@@ -469,7 +520,7 @@ export default function UploadDashboard({
                 e.preventDefault();
                 handleBatchFileAdd(e.dataTransfer.files);
               }}
-              className="border-2 border-dashed border-indigo-200/70 hover:border-indigo-400/80 bg-indigo-50/20 hover:bg-indigo-50/40 p-8 rounded-2xl text-center cursor-pointer transition-all space-y-3"
+              className="border-2 border-dashed border-teal-200/70 hover:border-teal-400/80 bg-teal-50/20 hover:bg-teal-50/40 p-8 rounded-2xl text-center cursor-pointer transition-all space-y-3"
             >
               <input
                 ref={batchFileInputRef}
@@ -479,12 +530,12 @@ export default function UploadDashboard({
                 onChange={(e) => handleBatchFileAdd(e.target.files)}
                 className="hidden"
               />
-              <div className="w-12 h-12 mx-auto rounded-full bg-indigo-100/70 flex items-center justify-center text-indigo-600 shadow-sm">
+              <div className="w-12 h-12 mx-auto rounded-full bg-teal-100/70 flex items-center justify-center text-teal-600 shadow-sm">
                 <FolderUp className="w-6 h-6" />
               </div>
               <div>
                 <div className="text-sm font-medium text-slate-700">
-                  Drop student files here, or <span className="text-indigo-600 underline">browse</span>
+                  Drop student files here, or <span className="text-teal-600 underline">browse</span>
                 </div>
                 <div className="text-xs text-slate-400 mt-1">
                   Select multiple {getModalityFilePlaceholder()} at once ({getAcceptedExtensions()})
@@ -516,7 +567,7 @@ export default function UploadDashboard({
                     >
                       <div className="flex items-center gap-2 min-w-0">
                         <span className="text-slate-400 font-medium shrink-0">#{idx + 1}</span>
-                        <FileText className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+                        <FileText className="w-3.5 h-3.5 text-teal-500 shrink-0" />
                         <span className="truncate text-slate-700 font-medium" title={file.name}>
                           {file.name}
                         </span>
@@ -535,7 +586,7 @@ export default function UploadDashboard({
                   ))}
                 </div>
 
-                <div className="pt-2 flex items-center justify-between text-xs text-indigo-700 border-t border-slate-200/60 font-medium">
+                <div className="pt-2 flex items-center justify-between text-xs text-teal-700 border-t border-slate-200/60 font-medium">
                   <span>
                     {batchFiles.length} students &rarr;{" "}
                     {Math.round((batchFiles.length * (batchFiles.length - 1)) / 2)} pairwise cross-checks will be computed
@@ -551,19 +602,25 @@ export default function UploadDashboard({
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
               <div className="text-xs text-slate-500">
                 {isBatchProcessing && (
-                  <div className="flex items-center space-x-2.5 text-indigo-700 font-medium animate-pulse">
-                    <Loader2 className="w-4 h-4 animate-spin text-indigo-600" />
+                  <div className="flex items-center space-x-2.5 text-teal-700 font-medium animate-pulse">
+                    <Loader2 className="w-4 h-4 animate-spin text-teal-600" />
                     <span>{batchProgressStep}</span>
                   </div>
                 )}
               </div>
 
               <button
-                type="submit"
-                disabled={isBatchProcessing || batchFiles.length < 2}
-                className="primary-pill-btn text-sm font-medium tracking-wide inline-flex items-center space-x-2 bg-gradient-to-r from-indigo-600 via-blue-600 to-teal-600 hover:from-indigo-700 hover:to-blue-700 text-white border-0 shadow-md shadow-indigo-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                type={user ? "submit" : "button"}
+                onClick={!user ? openAuthModal : undefined}
+                disabled={user ? (isBatchProcessing || batchFiles.length < 2) : false}
+                className="primary-pill-btn text-sm font-medium tracking-wide inline-flex items-center space-x-2 bg-gradient-to-r from-blue-600 via-teal-600 to-emerald-600 hover:from-blue-700 hover:to-teal-700 text-white border-0 shadow-md shadow-teal-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isBatchProcessing ? (
+                {!user ? (
+                  <>
+                    <Lock className="w-4 h-4 text-teal-200" />
+                    <span>Sign In to Run Classroom Matrix</span>
+                  </>
+                ) : isBatchProcessing ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
                     <span>Cross-Analyzing Classroom Batch...</span>
@@ -996,7 +1053,7 @@ export default function UploadDashboard({
         <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-xs text-slate-500">
             {isProcessing && (
-              <div className="flex items-center space-x-2.5 text-teal-800 font-medium animate-pulse">
+              <div className="flex items-center space-x-2.5 text-teal-700 font-medium animate-pulse">
                 <Loader2 className="w-4 h-4 animate-spin text-teal-600" />
                 <span>{progressStep}</span>
               </div>
@@ -1004,11 +1061,17 @@ export default function UploadDashboard({
           </div>
 
           <button
-            type="submit"
-            disabled={!isReadyToSubmit}
+            type={user ? "submit" : "button"}
+            onClick={!user ? openAuthModal : undefined}
+            disabled={user ? !isReadyToSubmit : false}
             className="primary-pill-btn text-sm font-medium tracking-wide inline-flex items-center space-x-2 bg-gradient-to-r from-blue-600 via-teal-600 to-emerald-600 hover:from-blue-700 hover:to-teal-700 text-white border-0 shadow-md shadow-teal-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isProcessing ? (
+            {!user ? (
+              <>
+                <Lock className="w-4 h-4 text-teal-200" />
+                <span>Sign In to Run Similarity Analysis</span>
+              </>
+            ) : isProcessing ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
                 <span>Executing Similarity Pipeline...</span>

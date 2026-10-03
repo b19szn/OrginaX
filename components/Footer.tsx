@@ -24,7 +24,7 @@ export default function Footer() {
               <span className="flex items-center space-x-1">
                 <span className="w-2 h-2 rounded-full bg-emerald-500" />
                 <span className="w-2 h-2 rounded-full bg-orange-500" />
-                <span className="w-2 h-2 rounded-full bg-fuchsia-500" />
+                <span className="w-2 h-2 rounded-full bg-rose-500" />
                 <span className="w-2 h-2 rounded-full bg-blue-500" />
                 <span className="w-2 h-2 rounded-full bg-teal-500" />
               </span>

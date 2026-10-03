@@ -61,9 +61,9 @@ export function calculateConfidenceScore(rawCosine: number): ConfidenceScoreResu
       description:
         "Nominal or incidental similarity within expected independent baseline bounds. Content appears substantially original.",
       badgeColor: {
-        bg: "bg-emerald-50",
-        border: "border-emerald-200",
-        text: "text-emerald-700",
+        bg: "bg-sky-50",
+        border: "border-sky-200",
+        text: "text-sky-700",
       },
     };
   }

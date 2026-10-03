@@ -1,9 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { getAuthenticatedUser } from "@/lib/auth";
 import { runComparisonJob } from "@/lib/queue/jobRunner";
 
 export async function POST(req: NextRequest) {
   try {
+    const user = await getAuthenticatedUser();
+    if (!user) {
+      return NextResponse.json(
+        { error: "Authentication required. Please sign in or register to run comparisons." },
+        { status: 401 }
+      );
+    }
+
     const body = await req.json();
     const { submissionId, artifactAId, artifactBId } = body;
 

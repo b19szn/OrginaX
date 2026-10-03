@@ -28,15 +28,11 @@ export default function ModelsCatalogPage() {
   const [selectedProvider, setSelectedProvider] = useState("ALL");
 
   const [models, setModels] = useState<ModelRecord[]>([
-    { id: "m1", name: "Text-Embedding-3-Large", provider: "OpenAI", category: "EMBEDDING", modelId: "text-embedding-3-large", maxTokens: 8192, temperature: 0.0, isEnabled: true },
-    { id: "m2", name: "GPT-4o Multimodal Analyzer", provider: "OpenAI", category: "REASONING", modelId: "gpt-4o", maxTokens: 4096, temperature: 0.1, isEnabled: true },
-    { id: "m3", name: "Claude 3.5 Sonnet", provider: "Anthropic", category: "REASONING", modelId: "claude-3-5-sonnet-20241022", maxTokens: 8192, temperature: 0.1, isEnabled: true },
-    { id: "m4", name: "Gemini 1.5 Pro", provider: "Google", category: "REASONING", modelId: "gemini-1.5-pro", maxTokens: 8192, temperature: 0.1, isEnabled: true },
-    { id: "m5", name: "DeepSeek Coder 33B", provider: "DeepSeek", category: "AST_CODE", modelId: "deepseek-coder-33b-instruct", maxTokens: 4096, temperature: 0.1, isEnabled: true },
-    { id: "m6", name: "Sentence-MiniLM-L6-v2", provider: "HuggingFace", category: "EMBEDDING", modelId: "all-MiniLM-L6-v2", maxTokens: 512, temperature: 0.0, isEnabled: true },
-    { id: "m7", name: "CodeBERT Base Canonicalizer", provider: "HuggingFace", category: "AST_CODE", modelId: "microsoft/codebert-base", maxTokens: 512, temperature: 0.0, isEnabled: true },
-    { id: "m8", name: "CLIP ViT-B/32 Perceptual Vision", provider: "HuggingFace", category: "VISION", modelId: "openai/clip-vit-base-patch32", maxTokens: 0, temperature: 0.0, isEnabled: true },
-    { id: "m9", name: "Local TF-IDF & AST Engine v2", provider: "Local Zero-Config", category: "AST_CODE", modelId: "local-ast-tfidf-v2", maxTokens: 16384, temperature: 0.0, isEnabled: true },
+    { id: "m1", name: "Sentence-BERT (all-MiniLM-L6-v2)", provider: "Sentence-BERT", category: "EMBEDDING", modelId: "sentence-transformers/all-MiniLM-L6-v2", maxTokens: 512, temperature: 0.0, isEnabled: true },
+    { id: "m2", name: "CodeBERT Base & AST Canonicalizer", provider: "CodeBERT", category: "AST_CODE", modelId: "microsoft/codebert-base", maxTokens: 512, temperature: 0.0, isEnabled: true },
+    { id: "m3", name: "OpenAI CLIP ViT-B/32 Vision Transformer", provider: "OpenAI CLIP", category: "VISION", modelId: "openai/clip-vit-base-patch32", maxTokens: 0, temperature: 0.0, isEnabled: true },
+    { id: "m4", name: "Local Zero-Knowledge AST & N-Gram Vectorizer", provider: "Local Zero-Config", category: "AST_CODE", modelId: "deterministic-ast-tfidf-v2", maxTokens: 8192, temperature: 0.0, isEnabled: true },
+    { id: "m5", name: "OpenAI Multi-Modal Gateway (Text-Embedding-3)", provider: "OpenAI Gateway", category: "EMBEDDING", modelId: "text-embedding-3-large", maxTokens: 8192, temperature: 0.0, isEnabled: true },
   ]);
 
   const handleToggle = (id: string) => {
@@ -62,7 +58,7 @@ export default function ModelsCatalogPage() {
             Models
           </h1>
           <p className="text-sm text-slate-400 mt-1">
-            Active foundational models and embedding pipelines ({enabledCount}/{models.length} active).
+            Active multi-modal similarity analysis models ({enabledCount}/{models.length} active).
           </p>
         </div>
       </div>
@@ -76,7 +72,7 @@ export default function ModelsCatalogPage() {
             placeholder="Search models by name or identifier..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 text-xs rounded-2xl bg-white/90 border border-slate-200/80 text-slate-800 placeholder:text-slate-400 focus:outline-hidden focus:ring-1 focus:ring-indigo-500 shadow-2xs"
+            className="w-full pl-10 pr-4 py-2.5 text-xs rounded-2xl bg-white/90 border border-slate-200/80 text-slate-800 placeholder:text-slate-400 focus:outline-hidden focus:ring-1 focus:ring-emerald-500 shadow-2xs"
           />
         </div>
 
@@ -85,13 +81,12 @@ export default function ModelsCatalogPage() {
           onChange={(e) => setSelectedProvider(e.target.value)}
           className="px-4 py-2.5 text-xs rounded-2xl bg-white/90 border border-slate-200/80 text-slate-700 focus:outline-hidden shadow-2xs"
         >
-          <option value="ALL">All Providers</option>
-          <option value="OpenAI">OpenAI</option>
-          <option value="Anthropic">Anthropic</option>
-          <option value="Google">Google</option>
-          <option value="DeepSeek">DeepSeek</option>
-          <option value="HuggingFace">HuggingFace</option>
-          <option value="Local Zero-Config">Local Zero-Config</option>
+          <option value="ALL">All Framework Providers</option>
+          <option value="Sentence-BERT">Sentence-BERT (Text)</option>
+          <option value="CodeBERT">CodeBERT (Code AST)</option>
+          <option value="OpenAI CLIP">OpenAI CLIP (Vision)</option>
+          <option value="Local Zero-Config">Local Zero-Config (Offline)</option>
+          <option value="OpenAI Gateway">OpenAI Gateway (Cloud)</option>
         </select>
       </div>
 
@@ -118,7 +113,7 @@ export default function ModelsCatalogPage() {
                   </td>
                   <td className="py-3 px-4 font-medium text-slate-700">{m.provider}</td>
                   <td className="py-3 px-4">
-                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200/60">
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/60">
                       {m.category}
                     </span>
                   </td>
@@ -126,8 +121,8 @@ export default function ModelsCatalogPage() {
                     {m.maxTokens > 0 ? m.maxTokens.toLocaleString() : "Visual"}
                   </td>
                   <td className="py-3 px-4">
-                    <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-sky-700 bg-sky-50 px-2 py-0.5 rounded-full border border-sky-200/60">
+                      <span className="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
                       Active
                     </span>
                   </td>
@@ -136,7 +131,7 @@ export default function ModelsCatalogPage() {
                       onClick={() => handleToggle(m.id)}
                       aria-label="Toggle model"
                       className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden ${
-                        m.isEnabled ? "bg-indigo-600" : "bg-slate-300"
+                        m.isEnabled ? "bg-emerald-600" : "bg-slate-300"
                       }`}
                     >
                       <span

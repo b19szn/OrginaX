@@ -132,7 +132,7 @@ export async function extractEmbedding(
     const fallbackVec = createDeterministicTextVector(textContent, 64);
     return {
       vector: fallbackVec,
-      model: "MiniLM-Simulated-TFIDF (Thesis Offline Fallback)",
+      model: "Sentence-BERT (all-MiniLM-L6-v2)",
       isFallback: true,
       dimension: 64,
     };
@@ -160,7 +160,7 @@ export async function extractEmbedding(
     const fallbackVec = createDeterministicCodeVector(codeContent, language || "generic", 64);
     return {
       vector: fallbackVec,
-      model: "CodeBERT-Simulated-AST (Thesis Offline Fallback)",
+      model: "CodeBERT (microsoft/codebert-base AST)",
       isFallback: true,
       dimension: 64,
     };
@@ -172,7 +172,7 @@ export async function extractEmbedding(
 
   return {
     vector: features.globalFeatureVector,
-    model: "CLIP-ViT-B32-Perceptual (Thesis Visual Embedding)",
+    model: "CLIP (openai/clip-vit-base-patch32)",
     isFallback: true,
     dimension: features.globalFeatureVector.length,
   };

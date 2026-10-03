@@ -77,7 +77,7 @@ export default function TelemetryTrackingPage() {
             </span>
           </h1>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-            Configure dynamic analytics tags (GA4, Clarity, GTM, Meta Pixel) and monitor automated webhook deliverability.
+            Configure dynamic analytics tags (GA4, Clarity, GTM, Facebook Pixel) and monitor automated webhook deliverability.
           </p>
         </div>
 
@@ -123,7 +123,7 @@ export default function TelemetryTrackingPage() {
           <div className="flex justify-end">
             <button
               onClick={() => handleSaveSetting("ga4_measurement_id", settings["ga4_measurement_id"] || "")}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white transition"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white transition"
             >
               {savedKey === "ga4_measurement_id" ? <Check className="w-3.5 h-3.5" /> : <Save className="w-3.5 h-3.5" />}
               <span>{savedKey === "ga4_measurement_id" ? "Saved" : "Save ID"}</span>
@@ -149,7 +149,7 @@ export default function TelemetryTrackingPage() {
           <div className="flex justify-end">
             <button
               onClick={() => handleSaveSetting("clarity_project_id", settings["clarity_project_id"] || "")}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white transition"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white transition"
             >
               {savedKey === "clarity_project_id" ? <Check className="w-3.5 h-3.5" /> : <Save className="w-3.5 h-3.5" />}
               <span>{savedKey === "clarity_project_id" ? "Saved" : "Save ID"}</span>
@@ -175,7 +175,7 @@ export default function TelemetryTrackingPage() {
           <div className="flex justify-end">
             <button
               onClick={() => handleSaveSetting("gtm_container_id", settings["gtm_container_id"] || "")}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white transition"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white transition"
             >
               {savedKey === "gtm_container_id" ? <Check className="w-3.5 h-3.5" /> : <Save className="w-3.5 h-3.5" />}
               <span>{savedKey === "gtm_container_id" ? "Saved" : "Save ID"}</span>
@@ -183,10 +183,10 @@ export default function TelemetryTrackingPage() {
           </div>
         </div>
 
-        {/* Meta Pixel */}
+        {/* Facebook Pixel */}
         <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-2xs space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Meta / Facebook Pixel</h3>
+            <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Facebook Pixel</h3>
             <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500">
               Pixel ID
             </span>
@@ -201,7 +201,7 @@ export default function TelemetryTrackingPage() {
           <div className="flex justify-end">
             <button
               onClick={() => handleSaveSetting("meta_pixel_id", settings["meta_pixel_id"] || "")}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white transition"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white transition"
             >
               {savedKey === "meta_pixel_id" ? <Check className="w-3.5 h-3.5" /> : <Save className="w-3.5 h-3.5" />}
               <span>{savedKey === "meta_pixel_id" ? "Saved" : "Save ID"}</span>
@@ -215,14 +215,14 @@ export default function TelemetryTrackingPage() {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <Send className="w-4 h-4 text-emerald-600" />
+              <Send className="w-4 h-4 text-sky-600" />
               <span>Outbound Webhook Delivery & Event Relay Log</span>
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
               Live audit stream of automated notifications sent to Slack, Datadog, and PagerDuty endpoints.
             </p>
           </div>
-          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-semibold border border-emerald-200/60">
+          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-sky-50 dark:bg-sky-950 text-sky-700 dark:text-sky-300 font-semibold border border-sky-200/60">
             100% DELIVERABILITY
           </span>
         </div>
@@ -243,12 +243,12 @@ export default function TelemetryTrackingPage() {
               {webhooks.map((w) => (
                 <tr key={w.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition">
                   <td className="py-2.5 px-3 font-semibold text-slate-900 dark:text-white">{w.id}</td>
-                  <td className="py-2.5 px-3 text-indigo-600 dark:text-indigo-400">{w.event}</td>
+                  <td className="py-2.5 px-3 text-emerald-600 dark:text-emerald-400">{w.event}</td>
                   <td className="py-2.5 px-3 text-slate-500">{w.destination}</td>
-                  <td className="py-2.5 px-3 font-bold text-emerald-600">{w.statusCode} OK</td>
+                  <td className="py-2.5 px-3 font-bold text-sky-600">{w.statusCode} OK</td>
                   <td className="py-2.5 px-3 text-slate-400">{w.latencyMs}ms</td>
                   <td className="py-2.5 px-3 text-right">
-                    <span className="px-1.5 py-0.5 rounded text-[10px] bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 font-bold">
+                    <span className="px-1.5 py-0.5 rounded text-[10px] bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300 font-bold">
                       {w.status}
                     </span>
                   </td>

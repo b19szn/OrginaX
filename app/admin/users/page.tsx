@@ -128,20 +128,20 @@ export default function UserManagementPage() {
 
       {/* RBAC Role Matrix Explanation Card */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="p-4 rounded-xl bg-indigo-50/50 dark:bg-indigo-950/30 border border-indigo-200/60 dark:border-indigo-900/60 text-xs space-y-1">
-          <strong className="text-indigo-900 dark:text-indigo-200 flex items-center gap-1.5 font-semibold">
-            <ShieldCheck className="w-3.5 h-3.5 text-indigo-600" /> SuperAdmin
+        <div className="p-4 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/30 border border-emerald-200/60 dark:border-emerald-900/60 text-xs space-y-1">
+          <strong className="text-emerald-900 dark:text-emerald-200 flex items-center gap-1.5 font-semibold">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> SuperAdmin
           </strong>
-          <p className="text-indigo-800/80 dark:text-indigo-300/80 leading-relaxed">
+          <p className="text-emerald-800/80 dark:text-emerald-300/80 leading-relaxed">
             Full platform configuration, AI provider vaults, dynamic scoring calibrators, and database administrative capabilities.
           </p>
         </div>
 
-        <div className="p-4 rounded-xl bg-purple-50/50 dark:bg-purple-950/30 border border-purple-200/60 dark:border-purple-900/60 text-xs space-y-1">
-          <strong className="text-purple-900 dark:text-purple-200 flex items-center gap-1.5 font-semibold">
-            <ShieldCheck className="w-3.5 h-3.5 text-purple-600" /> BillingAdmin
+        <div className="p-4 rounded-xl bg-sky-50/50 dark:bg-sky-950/30 border border-sky-200/60 dark:border-sky-900/60 text-xs space-y-1">
+          <strong className="text-sky-900 dark:text-sky-200 flex items-center gap-1.5 font-semibold">
+            <ShieldCheck className="w-3.5 h-3.5 text-sky-600" /> BillingAdmin
           </strong>
-          <p className="text-purple-800/80 dark:text-purple-300/80 leading-relaxed">
+          <p className="text-sky-800/80 dark:text-sky-300/80 leading-relaxed">
             Access to Stripe/merchant gateways, subscription tier pricing, invoices, and payment refunds. Read-only on AI vault.
           </p>
         </div>
@@ -165,7 +165,7 @@ export default function UserManagementPage() {
             placeholder="Search users by name, email, or user ID..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 text-xs rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white focus:outline-hidden focus:ring-1 focus:ring-indigo-500"
+            className="w-full pl-9 pr-3 py-2 text-xs rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white focus:outline-hidden focus:ring-1 focus:ring-emerald-500"
           />
         </div>
 
@@ -221,7 +221,7 @@ export default function UserManagementPage() {
                       <select
                         value={u.adminRole === "User" ? "" : u.adminRole}
                         onChange={(e) => handleAdminRoleChange(u.id, e.target.value || null)}
-                        className="text-xs font-medium py-1 px-2 rounded bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800"
+                        className="text-xs font-medium py-1 px-2 rounded bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800"
                       >
                         <option value="">Standard User</option>
                         <option value="SuperAdmin">SuperAdmin</option>
@@ -233,7 +233,7 @@ export default function UserManagementPage() {
                     <td className="py-2.5 px-3">
                       <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold ${
                         u.accountStatus === "ACTIVE"
-                          ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300"
+                          ? "bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300"
                           : u.accountStatus === "FROZEN"
                           ? "bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300"
                           : "bg-red-50 text-red-700 dark:bg-red-950 dark:text-red-300"

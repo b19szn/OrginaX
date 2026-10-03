@@ -111,7 +111,7 @@ export default function RecentJobsTable({
       className="multimodal-card overflow-hidden border border-slate-200/90 shadow-md bg-white/90 backdrop-blur-md rounded-2xl"
     >
       {/* Table Header Bar with Navigation Tabs */}
-      <div className="bg-gradient-to-r from-slate-50/90 via-indigo-50/30 to-blue-50/30 border-b border-slate-200/80 px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-gradient-to-r from-slate-50/90 via-teal-50/30 to-blue-50/30 border-b border-slate-200/80 px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
             <h3 className="text-base font-semibold text-slate-800 tracking-tight">
@@ -131,11 +131,11 @@ export default function RecentJobsTable({
               onClick={() => setActiveTab("batches")}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-all ${
                 activeTab === "batches"
-                  ? "bg-white text-indigo-700 shadow-sm"
+                  ? "bg-white text-teal-700 shadow-sm"
                   : "text-slate-600 hover:text-slate-900"
               }`}
             >
-              <Users className="w-3.5 h-3.5 text-indigo-500" />
+              <Users className="w-3.5 h-3.5 text-teal-600" />
               <span>Classroom Batches ({batches.length})</span>
             </button>
 
@@ -194,7 +194,7 @@ export default function RecentJobsTable({
                     <td className="py-3.5 px-6 font-normal text-slate-800 max-w-xs">
                       <div className="font-semibold text-slate-800 flex items-center gap-2">
                         <span>{batch.title}</span>
-                        <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-indigo-50 text-indigo-700 border border-indigo-100">
+                        <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-teal-50 text-teal-700 border border-teal-100">
                           Class Batch
                         </span>
                       </div>
@@ -261,15 +261,15 @@ export default function RecentJobsTable({
                       {onSelectBatch ? (
                         <button
                           onClick={() => onSelectBatch(batch.id)}
-                          className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-medium transition-all border border-indigo-200/80 shadow-2xs"
+                          className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-teal-50 hover:bg-teal-100 text-teal-700 font-medium transition-all border border-teal-200/80 shadow-2xs"
                         >
-                          <Grid className="w-3 h-3 text-indigo-500" />
+                          <Grid className="w-3 h-3 text-teal-600" />
                           <span>Open Class Matrix</span>
                         </button>
                       ) : (
                         <Link
                           href={`#upload-section`}
-                          className="inline-flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-medium transition-all border border-indigo-200/80 shadow-2xs"
+                          className="inline-flex items-center space-x-1 px-3 py-1.5 rounded-lg bg-teal-50 hover:bg-teal-100 text-teal-700 font-medium transition-all border border-teal-200/80 shadow-2xs"
                         >
                           <span>Open Matrix</span>
                           <ArrowUpRight className="w-3 h-3" />

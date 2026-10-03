@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { getAuthenticatedUser } from "@/lib/auth";
 import { preprocessText, extractTextFromBuffer } from "@/lib/preprocessing/text";
 import { preprocessCode, detectLanguage } from "@/lib/preprocessing/code";
 import fs from "fs";
@@ -20,16 +21,13 @@ export async function POST(req: NextRequest) {
     const title = (formData.get("title") as string) || "Untitled Submission";
     const languageInput = formData.get("language") as string | null;
 
-    // Get or create default user for demonstration
-    let user = await prisma.user.findFirst();
+    // Authenticate user
+    const user = await getAuthenticatedUser();
     if (!user) {
-      user = await prisma.user.create({
-        data: {
-          name: "Dr. Eleanor Vance",
-          email: "evaluator@university.edu",
-          role: "TEACHER",
-        },
-      });
+      return NextResponse.json(
+        { error: "Authentication required. Please sign in or register to perform multi-modal similarity analysis." },
+        { status: 401 }
+      );
     }
 
     let originalFileUrl = "";

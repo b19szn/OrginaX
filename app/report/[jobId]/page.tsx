@@ -156,7 +156,7 @@ export default function ReportPage() {
       <div className="clinical-card p-6 border border-slate-200 bg-white">
         <div className="flex items-center space-x-2 pb-3 mb-3 border-b border-slate-100 text-slate-800 font-medium text-sm">
           <BookOpen className="w-4 h-4 text-slate-700" />
-          <span>Methodology &amp; Metric Verification (Thesis Alignment)</span>
+          <span>Methodology &amp; Metric Verification (Cross-Modal Alignment)</span>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-slate-600 font-normal">
           <div>

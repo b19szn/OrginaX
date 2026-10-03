@@ -16,8 +16,8 @@ import {
 } from "lucide-react";
 
 interface HeroBannerProps {
-  onSeedDemo: () => Promise<void>;
-  isSeeding: boolean;
+  onSeedDemo?: () => Promise<void>;
+  isSeeding?: boolean;
 }
 
 type ModalityKey = "code" | "text" | "heatmap" | "image" | "cosine";
@@ -35,8 +35,7 @@ interface ModalityConfig {
   cardTitle: string;
 }
 
-// 5 Signature Modalities using the EXACT vibrant reference colors from ImageBind:
-// Green (Depth/AST), Orange (Text), Magenta/Purple (Heatmap), Blue (Visual/Audio), Teal/Cyan (IMU/Metric)
+// Green (AST), Orange (Text), Rose (Heatmap), Blue (Visual Graphic), Teal (Cosine Norm)
 const MODALITIES: ModalityConfig[] = [
   {
     key: "code",
@@ -66,10 +65,10 @@ const MODALITIES: ModalityConfig[] = [
     key: "heatmap",
     label: "Heat Map",
     sublabel: "4×4 Patch Grid",
-    color: "#c026d3", // Magenta / Purple (like Heat map in reference)
-    borderColor: "border-fuchsia-300",
-    bgLight: "bg-fuchsia-50",
-    textColor: "text-fuchsia-700",
+    color: "#e11d48", // Rose Red
+    borderColor: "border-rose-300",
+    bgLight: "bg-rose-50",
+    textColor: "text-rose-700",
     lineCoords: { x1: "82%", y1: "50%", x2: "66%", y2: "50%" },
     badgeText: "Heat Map · 4/16 Patches Flagged",
     cardTitle: "4×4 Spatial Attention Patch Heatmap",
@@ -155,7 +154,7 @@ export default function HeroBanner({ onSeedDemo, isSeeding }: HeroBannerProps) {
 
             <button
               type="button"
-              onClick={onSeedDemo}
+              onClick={onSeedDemo || (() => { window.location.href = "/dashboard"; })}
               disabled={isSeeding}
               className="secondary-pill-btn text-xs sm:text-sm font-medium inline-flex items-center space-x-2 disabled:opacity-50"
             >
@@ -178,8 +177,8 @@ export default function HeroBanner({ onSeedDemo, isSeeding }: HeroBannerProps) {
               <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
               <span>CLIP ViT-B/32</span>
             </span>
-            <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-fuchsia-50/90 border border-fuchsia-200 text-fuchsia-700 font-medium">
-              <span className="w-1.5 h-1.5 rounded-full bg-fuchsia-500" />
+            <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-rose-50/90 border border-rose-200 text-rose-700 font-medium">
+              <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
               <span>Patch Heatmap</span>
             </span>
             <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-teal-50/90 border border-teal-200 text-teal-700 font-medium">
@@ -208,7 +207,7 @@ export default function HeroBanner({ onSeedDemo, isSeeding }: HeroBannerProps) {
                   const isActive = mod.key === activeModality;
                   return (
                     <g key={`line-group-${mod.key}`}>
-                      {/* Solid colored base line (always colored, exactly as in ImageBind reference!) */}
+                      {/* Solid colored base line */}
                       <line
                         x1={mod.lineCoords.x1}
                         y1={mod.lineCoords.y1}
@@ -298,7 +297,7 @@ export default function HeroBanner({ onSeedDemo, isSeeding }: HeroBannerProps) {
                 </div>
               </div>
 
-              {/* 3. RIGHT SATELLITE: HEAT MAP - Magenta / Purple Theme */}
+              {/* 3. RIGHT SATELLITE: HEAT MAP - Rose Theme */}
               <div
                 onClick={() => setActiveModality("heatmap")}
                 onMouseEnter={() => setActiveModality("heatmap")}
@@ -309,16 +308,16 @@ export default function HeroBanner({ onSeedDemo, isSeeding }: HeroBannerProps) {
                 <div
                   className={`border rounded-xl px-3 py-1.5 sm:px-4 sm:py-2 shadow-2xs flex flex-col items-center transition-all ${
                     activeModality === "heatmap"
-                      ? "bg-fuchsia-50/95 border-fuchsia-500 ring-2 ring-fuchsia-100 shadow-sm"
-                      : "bg-white/95 border-slate-200 hover:border-fuchsia-300"
+                      ? "bg-rose-50/95 border-rose-500 ring-2 ring-rose-100 shadow-sm"
+                      : "bg-white/95 border-slate-200 hover:border-rose-300"
                   }`}
                 >
-                  <div className="w-7 h-7 rounded-lg bg-fuchsia-100/90 border border-fuchsia-300 flex items-center justify-center mb-0.5 shadow-2xs">
-                    <Flame className="w-3.5 h-3.5 text-fuchsia-700" />
+                  <div className="w-7 h-7 rounded-lg bg-rose-100/90 border border-rose-300 flex items-center justify-center mb-0.5 shadow-2xs">
+                    <Flame className="w-3.5 h-3.5 text-rose-700" />
                   </div>
                   <span
                     className={`text-[10px] sm:text-[11px] font-medium transition-colors ${
-                      activeModality === "heatmap" ? "text-fuchsia-800" : "text-slate-700"
+                      activeModality === "heatmap" ? "text-rose-800" : "text-slate-700"
                     }`}
                   >
                     Heat Map
@@ -385,12 +384,12 @@ export default function HeroBanner({ onSeedDemo, isSeeding }: HeroBannerProps) {
                 </div>
               </div>
 
-              {/* CENTRAL ANCHOR: COLORFUL HERO MEDIA MANIFOLD (Inspired by Meta ImageBind central card) */}
+              {/* CENTRAL ANCHOR: COLORFUL HERO MEDIA MANIFOLD */}
               <div className="relative z-30 w-[240px] sm:w-[270px] h-[175px] sm:h-[185px]">
                 <div className="w-full h-full rounded-2xl overflow-hidden shadow-lg border border-slate-200/90 flex flex-col justify-between relative transition-all duration-300 bg-white">
                   {/* Dynamic Color Rich Visual Background corresponding to the active modality */}
                   {activeModality === "code" && (
-                    <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 via-emerald-500/10 to-teal-500/25 p-3 flex flex-col justify-between">
+                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 via-teal-500/10 to-green-500/25 p-3 flex flex-col justify-between">
                       <div className="flex items-center justify-between text-[10px] font-mono text-green-900">
                         <span className="flex items-center space-x-1.5 font-medium">
                           <span className="w-2 h-2 rounded-full bg-green-500 animate-ping inline-block" />
@@ -447,17 +446,17 @@ export default function HeroBanner({ onSeedDemo, isSeeding }: HeroBannerProps) {
                   )}
 
                   {activeModality === "heatmap" && (
-                    <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/20 via-purple-500/10 to-pink-500/25 p-3 flex flex-col justify-between">
-                      <div className="flex items-center justify-between text-[10px] font-mono text-fuchsia-900">
+                    <div className="absolute inset-0 bg-gradient-to-br from-rose-500/20 via-amber-500/10 to-orange-500/25 p-3 flex flex-col justify-between">
+                      <div className="flex items-center justify-between text-[10px] font-mono text-rose-900">
                         <span className="flex items-center space-x-1.5 font-medium">
-                          <span className="w-2 h-2 rounded-full bg-fuchsia-500 animate-ping inline-block" />
+                          <span className="w-2 h-2 rounded-full bg-rose-500 animate-ping inline-block" />
                           <span>4×4 Spatial Attention</span>
                         </span>
-                        <span className="bg-fuchsia-100 border border-fuchsia-300 text-fuchsia-800 px-2 py-0.5 rounded-full text-[9px] font-medium">4 Hotspots</span>
+                        <span className="bg-rose-100 border border-rose-300 text-rose-800 px-2 py-0.5 rounded-full text-[9px] font-medium">4 Hotspots</span>
                       </div>
 
                       {/* Rich vibrant 4x4 patch grid with hotspots */}
-                      <div className="bg-white/95 border border-fuchsia-200/90 rounded-xl p-1.5 shadow-xs">
+                      <div className="bg-white/95 border border-rose-200/90 rounded-xl p-1.5 shadow-xs">
                         <div className="grid grid-cols-8 gap-1">
                           {[
                             0.2, 0.45, 0.92, 0.96, 0.1, 0.2, 0.35, 0.89,
@@ -467,7 +466,7 @@ export default function HeroBanner({ onSeedDemo, isSeeding }: HeroBannerProps) {
                               key={`heat-patch-${idx}`}
                               className={`h-3 rounded-xs transition-all ${
                                 val >= 0.88
-                                  ? "bg-fuchsia-600 animate-pulse shadow-xs"
+                                  ? "bg-rose-600 animate-pulse shadow-xs"
                                   : val >= 0.4
                                   ? "bg-amber-400"
                                   : "bg-slate-100"
@@ -477,15 +476,15 @@ export default function HeroBanner({ onSeedDemo, isSeeding }: HeroBannerProps) {
                         </div>
                       </div>
 
-                      <div className="text-[9px] text-fuchsia-800 flex items-center space-x-1 font-medium">
-                        <CheckCircle2 className="w-3 h-3 text-fuchsia-600" />
+                      <div className="text-[9px] text-rose-800 flex items-center space-x-1 font-medium">
+                        <CheckCircle2 className="w-3 h-3 text-rose-600" />
                         <span>Visual Sub-Patch Attention Pinpointed</span>
                       </div>
                     </div>
                   )}
 
                   {activeModality === "image" && (
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-indigo-500/10 to-sky-500/25 p-3 flex flex-col justify-between">
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-sky-500/10 to-blue-500/25 p-3 flex flex-col justify-between">
                       <div className="flex items-center justify-between text-[10px] font-mono text-blue-900">
                         <span className="flex items-center space-x-1.5 font-medium">
                           <span className="w-2 h-2 rounded-full bg-blue-500 animate-ping inline-block" />
@@ -537,7 +536,7 @@ export default function HeroBanner({ onSeedDemo, isSeeding }: HeroBannerProps) {
                     </div>
                   )}
 
-                  {/* Translucent Dark Pill Overlay (Mirroring ImageBind's "Image/Video" overlay) */}
+                  {/* Translucent Dark Pill Overlay */}
                   <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 z-10 w-[90%] text-center">
                     <div className="bg-slate-900/85 backdrop-blur-md text-white py-1 px-3 rounded-full text-[10px] font-medium tracking-wide shadow-md truncate">
                       {currentConfig.badgeText}

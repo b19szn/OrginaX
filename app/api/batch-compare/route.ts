@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { getAuthenticatedUser } from "@/lib/auth";
 import { extractEmbedding } from "@/lib/ai-gateway";
 import { cosineSimilarity } from "@/lib/similarity/cosine";
 import { calculateConfidenceScore } from "@/lib/similarity/scoring";
@@ -34,19 +35,13 @@ export async function POST(req: NextRequest) {
     let language = "python";
     const fileItems: ProcessedFileItem[] = [];
 
-    // 1. Get or create teacher user
-    let user = await prisma.user.findFirst({ where: { role: "TEACHER" } });
+    // 1. Authenticate user
+    const user = await getAuthenticatedUser();
     if (!user) {
-      user = await prisma.user.findFirst();
-    }
-    if (!user) {
-      user = await prisma.user.create({
-        data: {
-          name: "Dr. Eleanor Vance",
-          email: "evaluator@university.edu",
-          role: "TEACHER",
-        },
-      });
+      return NextResponse.json(
+        { error: "Authentication required. Please sign in or register to execute classroom batch analysis." },
+        { status: 401 }
+      );
     }
 
     if (contentType.includes("application/json")) {

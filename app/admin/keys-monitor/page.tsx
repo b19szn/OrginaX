@@ -73,7 +73,7 @@ export default function KeysMonitorPage() {
           disabled={loading}
           className="self-start sm:self-auto flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition shadow-2xs"
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin text-indigo-600" : ""}`} />
+          <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin text-emerald-600" : ""}`} />
           <span>Ping All</span>
         </button>
       </div>
@@ -100,14 +100,14 @@ export default function KeysMonitorPage() {
                     <span>{k.apiKeyMasked || "Local / Zero-Secret"}</span>
                   </td>
                   <td className="py-3 px-4 text-slate-700 font-medium">{k.lastLatencyMs}ms</td>
-                  <td className="py-3 px-4 text-emerald-700 font-semibold">{k.rateLimitStatus}</td>
+                  <td className="py-3 px-4 text-sky-700 font-semibold">{k.rateLimitStatus}</td>
                   <td className="py-3 px-4 text-right">
                     <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
                       k.status === "HEALTHY"
-                        ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                        ? "bg-sky-50 text-sky-700 border border-sky-200"
                         : "bg-slate-100 text-slate-500 border border-slate-200"
                     }`}>
-                      <span className={`w-1.5 h-1.5 rounded-full ${k.status === "HEALTHY" ? "bg-emerald-500" : "bg-slate-400"}`}></span>
+                      <span className={`w-1.5 h-1.5 rounded-full ${k.status === "HEALTHY" ? "bg-sky-500" : "bg-slate-400"}`}></span>
                       {k.status}
                     </span>
                   </td>

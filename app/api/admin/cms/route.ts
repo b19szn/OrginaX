@@ -49,6 +49,17 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: true, message: `Node "${title}" saved and published`, node: updated });
     }
 
+    if (action === "DELETE_NODE") {
+      const { key } = body;
+      if (!key) {
+        return NextResponse.json({ success: false, error: "Node key is required" }, { status: 400 });
+      }
+      await prisma.cmsNode.delete({
+        where: { key },
+      });
+      return NextResponse.json({ success: true, message: `Node "${key}" deleted successfully` });
+    }
+
     if (action === "TOGGLE_MAINTENANCE") {
       const { enabled } = body;
       await prisma.adminSetting.upsert({
@@ -62,6 +73,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: false, error: "Invalid CMS action" }, { status: 400 });
   } catch (error: any) {
-    return NextResponse.json({ success: false, error: "CMS update failed" }, { status: 500 });
+    console.error("CMS API error:", error);
+    return NextResponse.json({ success: false, error: error.message || "CMS operation failed" }, { status: 500 });
   }
 }

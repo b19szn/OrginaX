@@ -1,0 +1,238 @@
+{
+  "classes": [
+    {
+      "id": "class-cs101",
+      "code": "CS-101",
+      "name": "Data Structures & Algorithms",
+      "instructorName": "Dr. Eleanor Vance",
+      "instructorEmail": "evaluator@university.edu",
+      "department": "Computer Science",
+      "term": "Fall 2026",
+      "description": "Foundational data structures, sorting algorithms, and graph theory.",
+      "createdAt": "2026-09-01T08:00:00.000Z"
+    },
+    {
+      "id": "class-se302",
+      "code": "SE-302",
+      "name": "Software Engineering Capstone",
+      "instructorName": "Dr. Eleanor Vance",
+      "instructorEmail": "evaluator@university.edu",
+      "department": "Software Engineering",
+      "term": "Fall 2026",
+      "description": "Full-stack system architecture, microservices, and automated testing.",
+      "createdAt": "2026-09-02T08:00:00.000Z"
+    },
+    {
+      "id": "class-eng204",
+      "code": "ENG-204",
+      "name": "Academic Writing & Research Ethics",
+      "instructorName": "Prof. Marcus Sterling",
+      "instructorEmail": "evaluator@university.edu",
+      "department": "Humanities & Ethics",
+      "term": "Fall 2026",
+      "description": "Scholarly citation standards, literature reviews, and publication ethics.",
+      "createdAt": "2026-09-03T08:00:00.000Z"
+    }
+  ],
+  "assignments": [
+    {
+      "id": "asg-1",
+      "classId": "class-cs101",
+      "className": "Data Structures & Algorithms",
+      "title": "Assignment 1: Graph BFS & Shortest Path",
+      "description": "Implement BFS traversal in Python or C++. Ensure comments and time complexity analysis are included.",
+      "dueDate": "2026-10-05T23:59:59.000Z",
+      "maxScore": 100,
+      "allowStudentViewReport": true,
+      "createdAt": "2026-09-10T10:00:00.000Z"
+    },
+    {
+      "id": "asg-2",
+      "classId": "class-cs101",
+      "className": "Data Structures & Algorithms",
+      "title": "Assignment 2: Red-Black Tree Balancing",
+      "description": "Write recursive tree rotation procedures. Cross-checked with cohort code repository.",
+      "dueDate": "2026-10-18T23:59:59.000Z",
+      "maxScore": 100,
+      "allowStudentViewReport": false,
+      "createdAt": "2026-09-15T10:00:00.000Z"
+    },
+    {
+      "id": "asg-3",
+      "classId": "class-se302",
+      "className": "Software Engineering Capstone",
+      "title": "Milestone 1: Architecture Specification Paper",
+      "description": "Submit a 5-page PDF detailing component diagrams and database schema design.",
+      "dueDate": "2026-10-25T23:59:59.000Z",
+      "maxScore": 100,
+      "allowStudentViewReport": true,
+      "createdAt": "2026-09-20T10:00:00.000Z"
+    }
+  ],
+  "enrollments": [
+    {
+      "id": "enr-1",
+      "classId": "class-cs101",
+      "studentEmail": "alex.rivera@berkeley.edu",
+      "studentName": "Alex Rivera",
+      "enrolledAt": "2026-09-05T09:00:00.000Z"
+    },
+    {
+      "id": "enr-2",
+      "classId": "class-se302",
+      "studentEmail": "alex.rivera@berkeley.edu",
+      "studentName": "Alex Rivera",
+      "enrolledAt": "2026-09-05T09:00:00.000Z"
+    },
+    {
+      "id": "enr-1790379722304-1",
+      "classId": "class-cs101",
+      "studentEmail": "fahimsaleh2001@gmail.com",
+      "studentName": "fahim Saleh",
+      "enrolledAt": "2026-09-25T23:42:02.304Z"
+    },
+    {
+      "id": "enr-1790379722305-2",
+      "classId": "class-se302",
+      "studentEmail": "fahimsaleh2001@gmail.com",
+      "studentName": "fahim Saleh",
+      "enrolledAt": "2026-09-25T23:42:02.305Z"
+    },
+    {
+      "id": "enr-1790379762947-1",
+      "classId": "class-cs101",
+      "studentEmail": "evaluator@university.edu",
+      "studentName": "Dr. Eleanor Vance",
+      "enrolledAt": "2026-09-25T23:42:42.947Z"
+    },
+    {
+      "id": "enr-1790379762947-2",
+      "classId": "class-se302",
+      "studentEmail": "evaluator@university.edu",
+      "studentName": "Dr. Eleanor Vance",
+      "enrolledAt": "2026-09-25T23:42:42.947Z"
+    }
+  ],
+  "submissions": [
+    {
+      "id": "sub-1",
+      "assignmentId": "asg-1",
+      "assignmentTitle": "Assignment 1: Graph BFS & Shortest Path",
+      "classId": "class-cs101",
+      "className": "Data Structures & Algorithms",
+      "studentEmail": "alex.rivera@berkeley.edu",
+      "studentName": "Alex Rivera",
+      "fileTitle": "BFS_ShortestPath_Implementation.py",
+      "fileType": "CODE",
+      "similarityScore": 12.4,
+      "reportJobId": "cmuekjt130006oqhojwv5cdzs",
+      "status": "GRADED",
+      "grade": 95,
+      "gradeLetter": "A",
+      "feedback": "Outstanding implementation with optimal queue data structures and comprehensive edge case testing.",
+      "allowStudentViewReport": true,
+      "submittedAt": "2026-09-12T14:32:00.000Z",
+      "gradedAt": "2026-09-14T11:20:00.000Z"
+    },
+    {
+      "id": "sub-2",
+      "assignmentId": "asg-2",
+      "assignmentTitle": "Assignment 2: Red-Black Tree Balancing",
+      "classId": "class-cs101",
+      "className": "Data Structures & Algorithms",
+      "studentEmail": "alex.rivera@berkeley.edu",
+      "studentName": "Alex Rivera",
+      "fileTitle": "RedBlackTree_Rotations.cpp",
+      "fileType": "CODE",
+      "similarityScore": 78.5,
+      "reportJobId": "cmuekjt3p000coqho51fpdvnd",
+      "status": "GRADED",
+      "grade": 82,
+      "gradeLetter": "B",
+      "feedback": "Correct rotation logic, but control flow shares structural derivation with textbook reference.",
+      "allowStudentViewReport": false,
+      "submittedAt": "2026-09-17T16:45:00.000Z",
+      "gradedAt": "2026-09-19T09:15:00.000Z"
+    },
+    {
+      "id": "sub-demo-1-1790379722305",
+      "assignmentId": "asg-1",
+      "assignmentTitle": "Assignment 1: Graph BFS & Shortest Path",
+      "classId": "class-cs101",
+      "className": "Data Structures & Algorithms",
+      "studentEmail": "fahimsaleh2001@gmail.com",
+      "studentName": "fahim Saleh",
+      "fileTitle": "Graph_Shortest_Path_Solution.py",
+      "fileType": "CODE",
+      "similarityScore": 14.2,
+      "reportJobId": "cmuekjt130006oqhojwv5cdzs",
+      "status": "GRADED",
+      "grade": 94,
+      "gradeLetter": "A",
+      "feedback": "Great algorithmic logic and clean asymptotic documentation.",
+      "allowStudentViewReport": true,
+      "submittedAt": "2026-09-22T23:42:02.305Z",
+      "gradedAt": "2026-09-24T23:42:02.305Z"
+    },
+    {
+      "id": "sub-demo-2-1790379722305",
+      "assignmentId": "asg-2",
+      "assignmentTitle": "Assignment 2: Red-Black Tree Balancing",
+      "classId": "class-cs101",
+      "className": "Data Structures & Algorithms",
+      "studentEmail": "fahimsaleh2001@gmail.com",
+      "studentName": "fahim Saleh",
+      "fileTitle": "Tree_Rotation_Algorithm.cpp",
+      "fileType": "CODE",
+      "similarityScore": 82.5,
+      "reportJobId": "cmuekjt3p000coqho51fpdvnd",
+      "status": "GRADED",
+      "grade": 86,
+      "gradeLetter": "B",
+      "feedback": "Good structural code, but check internal variable names and comments.",
+      "allowStudentViewReport": false,
+      "submittedAt": "2026-09-20T23:42:02.305Z",
+      "gradedAt": "2026-09-23T23:42:02.305Z"
+    },
+    {
+      "id": "sub-demo-1-1790379762947",
+      "assignmentId": "asg-1",
+      "assignmentTitle": "Assignment 1: Graph BFS & Shortest Path",
+      "classId": "class-cs101",
+      "className": "Data Structures & Algorithms",
+      "studentEmail": "evaluator@university.edu",
+      "studentName": "Dr. Eleanor Vance",
+      "fileTitle": "Graph_Shortest_Path_Solution.py",
+      "fileType": "CODE",
+      "similarityScore": 14.2,
+      "reportJobId": "cmuekjt130006oqhojwv5cdzs",
+      "status": "GRADED",
+      "grade": 94,
+      "gradeLetter": "A",
+      "feedback": "Great algorithmic logic and clean asymptotic documentation.",
+      "allowStudentViewReport": true,
+      "submittedAt": "2026-09-22T23:42:42.947Z",
+      "gradedAt": "2026-09-24T23:42:42.947Z"
+    },
+    {
+      "id": "sub-demo-2-1790379762947",
+      "assignmentId": "asg-2",
+      "assignmentTitle": "Assignment 2: Red-Black Tree Balancing",
+      "classId": "class-cs101",
+      "className": "Data Structures & Algorithms",
+      "studentEmail": "evaluator@university.edu",
+      "studentName": "Dr. Eleanor Vance",
+      "fileTitle": "Tree_Rotation_Algorithm.cpp",
+      "fileType": "CODE",
+      "similarityScore": 82.5,
+      "reportJobId": "cmuekjt3p000coqho51fpdvnd",
+      "status": "GRADED",
+      "grade": 86,
+      "gradeLetter": "B",
+      "feedback": "Good structural code, but check internal variable names and comments.",
+      "allowStudentViewReport": false,
+      "submittedAt": "2026-09-20T23:42:42.947Z",
+      "gradedAt": "2026-09-23T23:42:42.947Z"
+    }
+  ]
+}

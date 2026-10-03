@@ -121,7 +121,7 @@ export default function AIEngineCalibratorPage() {
         <div className="flex items-center justify-between border-b border-slate-100 pb-4">
           <div>
             <h2 className="text-base font-bold text-slate-800 flex items-center gap-2">
-              <Sliders className="w-4 h-4 text-indigo-600" />
+              <Sliders className="w-4 h-4 text-emerald-600" />
               <span>Similarity Coefficient Allocation</span>
             </h2>
             <p className="text-xs text-slate-400 mt-0.5">
@@ -216,10 +216,10 @@ export default function AIEngineCalibratorPage() {
         </div>
 
         {/* Threshold Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-5 rounded-2xl bg-indigo-50/50 border border-indigo-200/60 text-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-5 rounded-2xl bg-emerald-50/50 border border-emerald-200/60 text-xs">
           <div className="space-y-1">
             <span className="font-semibold text-slate-800 block">
-              Severe Collusion Alert Threshold: <strong className="font-mono text-indigo-700">{scoringFormula.similarityThreshold}%</strong>
+              Severe Collusion Alert Threshold: <strong className="font-mono text-emerald-700">{scoringFormula.similarityThreshold}%</strong>
             </span>
             <span className="text-[11px] text-slate-500 block">
               Pairwise comparisons exceeding this composite score trigger immediate peer collusion warnings.
@@ -234,7 +234,7 @@ export default function AIEngineCalibratorPage() {
               step="1"
               value={scoringFormula.similarityThreshold}
               onChange={(e) => setScoringFormula({ ...scoringFormula, similarityThreshold: parseFloat(e.target.value) })}
-              className="w-44 accent-indigo-600 cursor-pointer"
+              className="w-44 accent-emerald-600 cursor-pointer"
             />
 
             <label className="flex items-center gap-2 cursor-pointer select-none">
@@ -242,7 +242,7 @@ export default function AIEngineCalibratorPage() {
                 type="checkbox"
                 checked={scoringFormula.strictMode}
                 onChange={(e) => setScoringFormula({ ...scoringFormula, strictMode: e.target.checked })}
-                className="w-4 h-4 rounded text-indigo-600 accent-indigo-600"
+                className="w-4 h-4 rounded text-emerald-600 accent-emerald-600"
               />
               <span className="font-medium text-slate-700 text-xs">Strict Mode (Penalize partial matches)</span>
             </label>
